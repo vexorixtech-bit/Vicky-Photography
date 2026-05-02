@@ -1,0 +1,136 @@
+export const services = [
+  {
+    category: "Wedding",
+    packages: [
+      {
+        name: "Basic",
+        price: "$1,499",
+        description: "Perfect for intimate weddings",
+        features: [
+          "4 hours coverage",
+          "1 photographer",
+          "200+ edited digital images",
+          "Online gallery",
+          "2-week delivery",
+        ],
+      },
+      {
+        name: "Standard",
+        price: "$2,499",
+        description: "Most popular choice",
+        features: [
+          "8 hours coverage",
+          "2 photographers",
+          "500+ edited digital images",
+          "Online gallery",
+          "Engagement session included",
+          "2-week delivery",
+        ],
+        popular: true,
+      },
+      {
+        name: "Premium",
+        price: "$3,999",
+        description: "Complete wedding day coverage",
+        features: [
+          "Full day coverage",
+          "2 photographers",
+          "Unlimited edited digital images",
+          "Online gallery",
+          "Engagement session included",
+          "Second shooter included",
+          "Custom album",
+          "1-week delivery",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Event",
+    packages: [
+      {
+        name: "Basic",
+        price: "$499",
+        description: "Perfect for small events",
+        features: [
+          "2 hours coverage",
+          "1 photographer",
+          "100+ edited digital images",
+          "Online gallery",
+          "3-day delivery",
+        ],
+      },
+      {
+        name: "Standard",
+        price: "$999",
+        description: "Ideal for corporate events",
+        features: [
+          "4 hours coverage",
+          "1 photographer",
+          "300+ edited digital images",
+          "Online gallery",
+          "Highlight video reel",
+          "2-day delivery",
+        ],
+        popular: true,
+      },
+      {
+        name: "Premium",
+        price: "$1,999",
+        description: "Full event coverage",
+        features: [
+          "8 hours coverage",
+          "2 photographers",
+          "Unlimited edited digital images",
+          "Online gallery",
+          "Highlight video reel",
+          "Same-day edits",
+          "1-day delivery",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Studio",
+    packages: [
+      {
+        name: "Basic",
+        price: "$199",
+        description: "Quick portrait session",
+        features: [
+          "1 hour session",
+          "20 edited digital images",
+          "Online gallery",
+          "1-week delivery",
+        ],
+      },
+      {
+        name: "Standard",
+        price: "$399",
+        description: "Extended portrait session",
+        features: [
+          "2 hour session",
+          "50 edited digital images",
+          "Online gallery",
+          "Multiple looks",
+          "1-week delivery",
+        ],
+        popular: true,
+      },
+      {
+        name: "Premium",
+        price: "$699",
+        description: "Complete studio experience",
+        features: [
+          "3 hour session",
+          "100 edited digital images",
+          "Online gallery",
+          "Unlimited looks",
+          " wardrobe consultation",
+          "Priority editing",
+          "5-day delivery",
+        ],
+      },
+    ],
+  },
+];
