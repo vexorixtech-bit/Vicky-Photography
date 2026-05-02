@@ -2,18 +2,28 @@ import { useState } from 'react';
 import { Check, Star } from 'lucide-react';
 import { services } from '../data/services';
 import { Link } from 'react-router-dom';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
-const serviceTypes = ['Wedding', 'Event', 'Studio'];
+const serviceTypes = ['Wedding', 'Birthday', 'Event', 'Portrait', 'Studio'];
 
 export default function Services() {
   const [activeService, setActiveService] = useState('Wedding');
+  const [headerRef, headerVisible] = useScrollReveal();
+  const [tabsRef, tabsVisible] = useScrollReveal();
+  const [packagesRef, packagesVisible] = useScrollReveal();
+  const [ctaRef, ctaVisible] = useScrollReveal();
 
   const activeServiceData = services.find((s) => s.category === activeService);
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div
+          ref={headerRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <p
             className="text-sm tracking-[0.3em] uppercase mb-4"
             style={{ color: 'var(--accent)' }}
@@ -35,7 +45,12 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div
+          ref={tabsRef}
+          className={`flex flex-wrap justify-center gap-3 mb-12 transition-all duration-700 ${
+            tabsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           {serviceTypes.map((type) => (
             <button
               key={type}
@@ -57,7 +72,12 @@ export default function Services() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div
+          ref={packagesRef}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-700 ${
+            packagesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           {activeServiceData?.packages.map((pkg, index) => (
             <div
               key={index}
@@ -141,7 +161,10 @@ export default function Services() {
         </div>
 
         <div
-          className="mt-16 p-8 md:p-12 rounded-lg text-center"
+          ref={ctaRef}
+          className={`mt-16 p-8 md:p-12 rounded-lg text-center transition-all duration-700 ${
+            ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
           style={{ backgroundColor: 'var(--surface)' }}
         >
           <h2

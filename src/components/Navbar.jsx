@@ -28,10 +28,10 @@ export default function Navbar() {
   }, []);
 
   const bgClass = isScrolled
-    ? 'bg-[var(--bg-secondary)]/95 backdrop-blur-md shadow-lg'
+    ? 'bg-[var(--bg-secondary)]/95 backdrop-blur-md shadow-lg border-b'
     : isHome
     ? 'bg-transparent'
-    : 'bg-[var(--bg-secondary)]/95 backdrop-blur-md shadow-lg';
+    : 'bg-[var(--bg-secondary)]/95 backdrop-blur-md shadow-lg border-b';
 
   return (
     <nav
@@ -50,7 +50,7 @@ export default function Navbar() {
               className="font-heading text-xl font-semibold tracking-wide"
               style={{ color: 'var(--text-primary)' }}
             >
-              Lens & Light
+              Vikky Photography
             </span>
           </Link>
 

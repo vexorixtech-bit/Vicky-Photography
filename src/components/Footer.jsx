@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Camera, Mail, Phone, MapPin, Instagram, Facebook } from 'lucide-react';
+import { Camera, Mail, Phone, MapPin, Instagram, Facebook, Youtube } from 'lucide-react';
 
 const quickLinks = [
   { name: 'Home', path: '/' },
@@ -14,12 +14,17 @@ const socialLinks = [
   {
     name: 'Instagram',
     icon: Instagram,
-    url: 'https://instagram.com',
+    url: 'https://instagram.com/vexorixtech',
   },
   {
     name: 'Facebook',
     icon: Facebook,
-    url: 'https://facebook.com',
+    url: 'https://facebook.com/vexorixtech',
+  },
+  {
+    name: 'YouTube',
+    icon: Youtube,
+    url: 'https://youtube.com/@vexorixtech',
   },
 ];
 
@@ -50,15 +55,14 @@ export default function Footer() {
               className="text-sm leading-relaxed opacity-70"
               style={{ color: 'var(--text-secondary)' }}
             >
-              Capturing life's most beautiful moments with artistic vision and
-              professional excellence. Digital photography at its finest.
+              Turning your precious moments into timeless visual stories with creative excellence.
             </p>
           </div>
 
           <div>
             <h4
-              className="font-heading text-lg font-semibold mb-4"
-              style={{ color: 'var(--text-primary)' }}
+              className="font-heading text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: 'var(--accent)' }}
             >
               Quick Links
             </h4>
@@ -140,7 +144,7 @@ export default function Footer() {
             className="text-sm text-center opacity-70"
             style={{ color: 'var(--text-secondary)' }}
           >
-            &copy; {currentYear} Lens & Light Photography. All rights reserved.
+            &copy; {currentYear} Vikky Photography. All rights reserved.
           </p>
         </div>
       </div>

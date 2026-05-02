@@ -46,6 +46,51 @@ export const services = [
     ],
   },
   {
+    category: "Birthday",
+    packages: [
+      {
+        name: "Basic",
+        price: "$299",
+        description: "Perfect for small birthday parties",
+        features: [
+          "2 hours coverage",
+          "1 photographer",
+          "100+ edited digital images",
+          "Online gallery",
+          "3-day delivery",
+        ],
+      },
+      {
+        name: "Standard",
+        price: "$499",
+        description: "Ideal for family birthdays",
+        features: [
+          "4 hours coverage",
+          "1 photographer",
+          "200+ edited digital images",
+          "Online gallery",
+          "Highlight video reel",
+          "2-day delivery",
+        ],
+        popular: true,
+      },
+      {
+        name: "Premium",
+        price: "$899",
+        description: "Full birthday celebration coverage",
+        features: [
+          "6 hours coverage",
+          "2 photographers",
+          "Unlimited edited digital images",
+          "Online gallery",
+          "Highlight video reel",
+          "Same-day edits",
+          "1-day delivery",
+        ],
+      },
+    ],
+  },
+  {
     category: "Event",
     packages: [
       {
@@ -91,7 +136,7 @@ export const services = [
     ],
   },
   {
-    category: "Studio",
+    category: "Portrait",
     packages: [
       {
         name: "Basic",
@@ -106,8 +151,51 @@ export const services = [
       },
       {
         name: "Standard",
-        price: "$399",
+        price: "$349",
         description: "Extended portrait session",
+        features: [
+          "2 hour session",
+          "50 edited digital images",
+          "Online gallery",
+          "Multiple looks",
+          "1-week delivery",
+        ],
+        popular: true,
+      },
+      {
+        name: "Premium",
+        price: "$599",
+        description: "Complete portrait experience",
+        features: [
+          "3 hour session",
+          "100 edited digital images",
+          "Online gallery",
+          "Unlimited looks",
+          "Wardrobe consultation",
+          "Priority editing",
+          "5-day delivery",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Studio",
+    packages: [
+      {
+        name: "Basic",
+        price: "$199",
+        description: "Quick studio session",
+        features: [
+          "1 hour session",
+          "20 edited digital images",
+          "Online gallery",
+          "1-week delivery",
+        ],
+      },
+      {
+        name: "Standard",
+        price: "$399",
+        description: "Extended studio session",
         features: [
           "2 hour session",
           "50 edited digital images",
@@ -126,7 +214,7 @@ export const services = [
           "100 edited digital images",
           "Online gallery",
           "Unlimited looks",
-          " wardrobe consultation",
+          "Wardrobe consultation",
           "Priority editing",
           "5-day delivery",
         ],

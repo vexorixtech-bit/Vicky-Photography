@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { CheckCircle, AlertCircle } from 'lucide-react';
+import { CheckCircle, AlertCircle, PartyPopper, Heart, Camera, Image, Music } from 'lucide-react';
 
 const eventTypes = [
-  'Wedding',
-  'Pre-wedding',
-  'Event',
-  'Portrait',
-  'Fashion',
-  'Other',
+  { id: 'wedding', label: 'Wedding', icon: Heart },
+  { id: 'birthday', label: 'Birthday', icon: PartyPopper },
+  { id: 'event', label: 'Event', icon: Music },
+  { id: 'portrait', label: 'Portrait', icon: Camera },
+  { id: 'studio', label: 'Studio', icon: Image },
 ];
 
 export default function Booking() {
@@ -45,6 +44,13 @@ export default function Booking() {
 
     if (!formData.date) {
       newErrors.date = 'Please select a date';
+    } else {
+      const selectedDate = new Date(formData.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (selectedDate < today) {
+        newErrors.date = 'Date must be in the future';
+      }
     }
 
     setErrors(newErrors);
@@ -55,14 +61,39 @@ export default function Booking() {
     e.preventDefault();
 
     if (validateForm()) {
-      const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-      bookings.push({
-        ...formData,
-        id: Date.now(),
-        createdAt: new Date().toISOString(),
-        status: 'pending',
-      });
-      localStorage.setItem('bookings', JSON.stringify(bookings));
+      const bookingData = `
+=============================
+  NEW BOOKING REQUEST
+=============================
+Date: ${new Date().toLocaleString()}
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Event Type: ${formData.eventType}
+Event Date: ${formData.date}
+Message: ${formData.message}
+=============================
+`;
+
+      const fileName = `members/jsubs/booking_${Date.now()}.txt`;
+      const blob = new Blob([bookingData], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+
+      const mailtoUrl = `mailto:vexorix.tech@gmail.com?subject=${encodeURIComponent(' New Booking - ' + formData.eventType)}&body=${encodeURIComponent(
+        ` NEW BOOKING REQUEST \n\n` +
+        ` Name: ${formData.name}\n` +
+        ` Email: ${formData.email}\n` +
+        ` Phone: ${formData.phone}\n` +
+        ` Event Type: ${formData.eventType}\n` +
+        ` Event Date: ${formData.date}\n\n` +
+        ` Message:\n${formData.message}\n\n` +
+        ` Thank you for choosing Vikky Photography! ✨`
+      )}`;
+      window.location.href = mailtoUrl;
       setIsSubmitted(true);
     }
   };
@@ -92,7 +123,7 @@ export default function Booking() {
               className="font-heading text-3xl font-semibold mb-4"
               style={{ color: 'var(--text-primary)' }}
             >
-              Booking Submitted!
+               Booking Submitted!
             </h1>
             <p
               className="text-lg opacity-80 mb-6"
@@ -119,7 +150,7 @@ export default function Booking() {
                 color: 'var(--bg-primary)',
               }}
             >
-              Book Another Session
+              🎉 Book Another Session
             </button>
           </div>
         </div>
@@ -130,45 +161,45 @@ export default function Booking() {
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <p
             className="text-sm tracking-[0.3em] uppercase mb-4"
             style={{ color: 'var(--accent)' }}
           >
-            Book Your Session
+             Book Your Session
           </p>
           <h1
             className="font-heading text-4xl md:text-5xl font-semibold mb-4"
             style={{ color: 'var(--text-primary)' }}
           >
-            Request a Booking
+             Request a Booking
           </h1>
           <p
             className="text-lg opacity-80"
             style={{ color: 'var(--text-secondary)' }}
           >
-            Fill out the form below and we'll get back to you soon.
+            Fill out the form below and we'll get back to you soon! 
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-6 animate-fade-in"
+          className="space-y-5 animate-fade-in"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label
-                className="block text-sm font-medium mb-2"
+                className="block text-sm font-medium mb-1"
                 style={{ color: 'var(--text-primary)' }}
               >
-                Name *
+                 Name *
               </label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 text-sm"
                 style={{
                   backgroundColor: 'var(--surface)',
                   borderColor: errors.name ? '#ef4444' : 'var(--border)',
@@ -177,8 +208,8 @@ export default function Booking() {
                 placeholder="Your name"
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={14} />
+                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle size={12} />
                   {errors.name}
                 </p>
               )}
@@ -186,17 +217,17 @@ export default function Booking() {
 
             <div>
               <label
-                className="block text-sm font-medium mb-2"
+                className="block text-sm font-medium mb-1"
                 style={{ color: 'var(--text-primary)' }}
               >
-                Email *
+                 Email *
               </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 text-sm"
                 style={{
                   backgroundColor: 'var(--surface)',
                   borderColor: errors.email ? '#ef4444' : 'var(--border)',
@@ -205,135 +236,148 @@ export default function Booking() {
                 placeholder="you@example.com"
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={14} />
+                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle size={12} />
                   {errors.email}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label
-                className="block text-sm font-medium mb-2"
+                className="block text-sm font-medium mb-1"
                 style={{ color: 'var(--text-primary)' }}
               >
-                Phone *
+                 Phone *
               </label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 text-sm"
                 style={{
                   backgroundColor: 'var(--surface)',
                   borderColor: errors.phone ? '#ef4444' : 'var(--border)',
                   color: 'var(--text-primary)',
                 }}
-                placeholder="+1 (555) 000-0000"
+                placeholder="+91 9655058949"
               />
               {errors.phone && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={14} />
+                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle size={12} />
                   {errors.phone}
                 </p>
               )}
             </div>
 
             <div>
-              <label
-                className="block text-sm font-medium mb-2"
+                <label
+                className="block text-sm font-medium mb-1"
                 style={{ color: 'var(--text-primary)' }}
               >
                 Event Type *
               </label>
-              <select
-                name="eventType"
-                value={formData.eventType}
-                onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
-                style={{
-                  backgroundColor: 'var(--surface)',
-                  borderColor: errors.eventType ? '#ef4444' : 'var(--border)',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                <option value="">Select event type</option>
+              <div className="grid grid-cols-5 gap-1.5">
                 {eventTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, eventType: type.label }));
+                      if (errors.eventType) {
+                        setErrors(prev => ({ ...prev, eventType: '' }));
+                      }
+                    }}
+                    className={`flex flex-col items-center gap-1 px-2 py-2 rounded-lg border transition-all duration-300 text-xs ${
+                      formData.eventType === type.label ? 'scale-105' : 'opacity-70 hover:opacity-100'
+                    }`}
+                    style={{
+                      backgroundColor: formData.eventType === type.label ? 'var(--accent)' : 'var(--surface)',
+                      borderColor: errors.eventType ? '#ef4444' : 'var(--border)',
+                      color: formData.eventType === type.label ? 'var(--bg-primary)' : 'var(--text-primary)',
+                    }}
+                  >
+                    <type.icon size={18} />
+                    <span className="font-medium">{type.label}</span>
+                  </button>
                 ))}
-              </select>
+              </div>
               {errors.eventType && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  <AlertCircle size={14} />
+                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle size={12} />
                   {errors.eventType}
                 </p>
               )}
             </div>
           </div>
 
-          <div>
-            <label
-              className="block text-sm font-medium mb-2"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              Event Date *
-            </label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
-              style={{
-                backgroundColor: 'var(--surface)',
-                borderColor: errors.date ? '#ef4444' : 'var(--border)',
-                color: 'var(--text-primary)',
-              }}
-            />
-            {errors.date && (
-              <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                <AlertCircle size={14} />
-                {errors.date}
-              </p>
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                className="block text-sm font-medium mb-1"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                 Event Date *
+              </label>
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 text-sm"
+                style={{
+                  backgroundColor: 'var(--surface)',
+                  borderColor: errors.date ? '#ef4444' : 'var(--border)',
+                  color: 'var(--text-primary)',
+                }}
+              />
+              {errors.date && (
+                <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle size={12} />
+                  {errors.date}
+                </p>
+              )}
+            </div>
+
+            <div>
+              {/* Empty div for alignment */}
+            </div>
           </div>
 
           <div>
             <label
-              className="block text-sm font-medium mb-2"
+              className="block text-sm font-medium mb-1"
               style={{ color: 'var(--text-primary)' }}
             >
-              Message (Optional)
+               Message (Optional)
             </label>
             <textarea
               name="message"
               value={formData.message}
               onChange={handleChange}
-              rows={5}
-              className="w-full px-4 py-3 rounded-lg border transition-all duration-300 resize-none"
+              rows={3}
+              className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 resize-none text-sm"
               style={{
                 backgroundColor: 'var(--surface)',
                 borderColor: 'var(--border)',
                 color: 'var(--text-primary)',
               }}
-              placeholder="Tell us about your event..."
+              placeholder="Tell us about your event... "
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-4 text-base font-medium tracking-wider uppercase rounded-lg transition-all duration-300 hover:scale-[1.02]"
+            className="w-full py-3 text-sm font-medium tracking-wider uppercase rounded-lg transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
             style={{
               backgroundColor: 'var(--accent)',
               color: 'var(--bg-primary)',
             }}
           >
-            Submit Booking Request
+             Submit Booking Request 
           </button>
         </form>
       </div>

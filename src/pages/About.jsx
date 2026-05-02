@@ -1,7 +1,13 @@
 import { Camera, Award, Users, Clock } from 'lucide-react';
 import TestimonialSlider from '../components/TestimonialSlider';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function About() {
+  const [bioRef, bioVisible] = useScrollReveal();
+  const [statsRef, statsVisible] = useScrollReveal();
+  const [skillsRef, skillsVisible] = useScrollReveal();
+  const [testimonialsRef, testimonialsVisible] = useScrollReveal();
+
   const stats = [
     { icon: Camera, value: '500+', label: 'Sessions Completed' },
     { icon: Award, value: '15+', label: 'Years Experience' },
@@ -21,13 +27,18 @@ export default function About() {
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-          <div className="animate-fade-in">
+        <div
+          ref={bioRef}
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 transition-all duration-700 ${
+            bioVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div>
             <p
               className="text-sm tracking-[0.3em] uppercase mb-4"
               style={{ color: 'var(--accent)' }}
             >
-              About Us
+              About Me
             </p>
             <h1
               className="font-heading text-4xl md:text-5xl font-semibold mb-6 leading-tight"
@@ -35,25 +46,24 @@ export default function About() {
             >
               The Story Behind
               <br />
-              Lens & Light
+              Vikky Photography
             </h1>
             <div className="space-y-4">
               <p
                 className="text-lg opacity-80 leading-relaxed"
                 style={{ color: 'var(--text-secondary)' }}
               >
-                Founded in 2010, Lens & Light Photography has been capturing life's
-                most beautiful moments for over a decade. Our team of passionate
-                photographers combines artistic vision with technical excellence to
-                create timeless images.
+                Founded in 2010, Vikky Photography has been capturing life's
+                most beautiful moments for over a decade. With artistic vision and
+                technical excellence, we create timeless images.
               </p>
               <p
                 className="text-lg opacity-80 leading-relaxed"
                 style={{ color: 'var(--text-secondary)' }}
               >
                 We believe every photograph should tell a story, evoke emotion, and be
-                cherished for generations. From intimate weddings to grand corporate
-                events, we approach each project with dedication and creativity.
+                cherished for generations. From intimate weddings to grand events,
+                we approach each project with dedication and creativity.
               </p>
               <p
                 className="text-lg opacity-80 leading-relaxed"
@@ -89,7 +99,10 @@ export default function About() {
         </div>
 
         <div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
+          ref={statsRef}
+          className={`grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 transition-all duration-700 ${
+            statsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
           style={{ backgroundColor: 'var(--surface)', padding: '3rem' }}
         >
           {stats.map((stat, index) => (
@@ -119,7 +132,12 @@ export default function About() {
           ))}
         </div>
 
-        <div className="mb-20">
+        <div
+          ref={skillsRef}
+          className={`mb-20 transition-all duration-700 ${
+            skillsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="text-center mb-12">
             <h2
               className="font-heading text-3xl md:text-4xl font-semibold mb-4"
@@ -154,7 +172,12 @@ export default function About() {
           </div>
         </div>
 
-        <div>
+        <div
+          ref={testimonialsRef}
+          className={`transition-all duration-700 ${
+            testimonialsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="text-center mb-12">
             <p
               className="text-sm tracking-[0.3em] uppercase mb-4"

@@ -1,9 +1,33 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Facebook, Youtube, CheckCircle, AlertCircle } from 'lucide-react';
+
+const contactInfo = [
+  {
+    icon: Mail,
+    title: 'Email',
+    label: 'Email',
+    details: 'vexorix.tech@gmail.com',
+    description: 'We reply within 24 hours',
+  },
+  {
+    icon: Phone,
+    title: 'Phone',
+    label: 'Phone',
+    details: '+91 9655058949',
+    description: 'Mon-Sat, 9am-6pm IST',
+  },
+  {
+    icon: MapPin,
+    title: 'Studio',
+    label: 'Address',
+    details: '2/544 Anna Nagar, Chennai - 600002',
+    description: 'By appointment only',
+  },
+];
 
 const subjects = [
   'General Inquiry',
-  'Booking Request',
+  'Bookng Request',
   'Pricing Question',
   'Partnership',
   'Other',
@@ -44,27 +68,48 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (validateForm()) {
-      const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-      messages.push({
-        ...formData,
-        id: Date.now(),
-        createdAt: new Date().toISOString(),
-        status: 'unread',
-      });
-      localStorage.setItem('messages', JSON.stringify(messages));
-      setIsSubmitted(true);
-    }
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      const contactData = `
+=============================
+  NEW CONTACT MESSAGE
+=============================
+Date: ${new Date().toLocaleString()}
+Name: ${formData.name}
+Email: ${formData.email}
+Subject: ${formData.subject}
+Message: ${formData.message}
+=============================
+`;
+
+      const fileName = `members/jsubs/contact_${Date.now()}.txt`;
+      const blob = new Blob([contactData], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+
+      const mailtoUrl = `mailto:vexorix.tech@gmail.com?subject=${encodeURIComponent(' ' + formData.subject)}&body=${encodeURIComponent(
+        ` NEW CONTACT MESSAGE 🎊\n\n` +
+        ` Name: ${formData.name}\n` +
+        ` Email: ${formData.email}\n` +
+        ` Subject: ${formData.subject}\n\n` +
+        ` Message:\n${formData.message}\n\n` +
+        ` Thank you for contacting Vikky Photography! `
+      )}`;
+      window.location.href = mailtoUrl;
+      setIsSubmitted(true);
     }
   };
 
@@ -85,7 +130,7 @@ export default function Contact() {
               className="font-heading text-3xl font-semibold mb-4"
               style={{ color: 'var(--text-primary)' }}
             >
-              Message Sent!
+              Message Sent! 🎊
             </h1>
             <p
               className="text-lg opacity-80 mb-6"
@@ -117,74 +162,62 @@ export default function Contact() {
     );
   }
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: 'Email',
-      details: 'hello@lensandlight.com',
-      description: 'We reply within 24 hours',
-    },
-    {
-      icon: Phone,
-      title: 'Phone',
-      details: '+1 (555) 123-4567',
-      description: 'Mon-Fri, 9am-6pm EST',
-    },
-    {
-      icon: MapPin,
-      title: 'Studio',
-      details: 'New York, NY 10001',
-      description: 'By appointment only',
-    },
-    {
-      icon: Clock,
-      title: 'Hours',
-      details: 'Mon-Sat: 9am-6pm',
-      description: 'Closed on Sundays',
-    },
-  ];
-
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <p
             className="text-sm tracking-[0.3em] uppercase mb-4"
             style={{ color: 'var(--accent)' }}
           >
-            Get In Touch
+             Get In Touch
           </p>
-          <h1
-            className="font-heading text-4xl md:text-5xl font-semibold mb-4"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            Contact Us
-          </h1>
+            <h1
+              className="font-heading text-4xl md:text-5xl font-semibold mb-4"
+              style={{ color: 'var(--text-primary)' }}
+            >
+               Contact Us
+            </h1>
           <p
-            className="text-lg max-w-2xl mx-auto opacity-80"
+            className="text-lg opacity-80"
             style={{ color: 'var(--text-secondary)' }}
           >
-            Have a question or want to work together? We'd love to hear from you.
+            Have a question or want to work together? We'd love to hear from you! 
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <div
-              className="p-8 rounded-lg mb-8 animate-fade-in"
-              style={{ backgroundColor: 'var(--surface)' }}
-            >
-              <h2
-                className="font-heading text-2xl font-semibold mb-6"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                Send a Message
-              </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div
+            className="rounded-lg overflow-hidden h-64 md:h-80"
+            style={{ backgroundColor: 'var(--surface)' }}
+          >
+            <iframe
+              title="Location map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1422937950147!2d-73.98731968482413!3d40.75889607932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+            />
+          </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+          <div
+            className="p-6 md:p-8 rounded-lg"
+            style={{ backgroundColor: 'var(--surface)' }}
+          >
+            <h4
+              className="font-heading text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: 'var(--accent)' }}
+            >
+               Send a Message
+            </h4>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label
-                    className="block text-sm font-medium mb-2"
+                    className="block text-sm font-medium mb-1"
                     style={{ color: 'var(--text-primary)' }}
                   >
                     Name *
@@ -194,7 +227,7 @@ export default function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                    className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 text-sm"
                     style={{
                       backgroundColor: 'var(--bg-primary)',
                       borderColor: errors.name ? '#ef4444' : 'var(--border)',
@@ -203,8 +236,8 @@ export default function Contact() {
                     placeholder="Your name"
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                      <AlertCircle size={14} />
+                    <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <AlertCircle size={12} />
                       {errors.name}
                     </p>
                   )}
@@ -212,7 +245,7 @@ export default function Contact() {
 
                 <div>
                   <label
-                    className="block text-sm font-medium mb-2"
+                    className="block text-sm font-medium mb-1"
                     style={{ color: 'var(--text-primary)' }}
                   >
                     Email *
@@ -222,7 +255,7 @@ export default function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                    className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 text-sm"
                     style={{
                       backgroundColor: 'var(--bg-primary)',
                       borderColor: errors.email ? '#ef4444' : 'var(--border)',
@@ -231,152 +264,121 @@ export default function Contact() {
                     placeholder="you@example.com"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                      <AlertCircle size={14} />
+                    <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <AlertCircle size={12} />
                       {errors.email}
                     </p>
                   )}
                 </div>
+              </div>
 
-                <div>
-                  <label
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: 'var(--text-primary)' }}
-                  >
-                    Subject *
-                  </label>
-                  <select
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
-                    style={{
-                      backgroundColor: 'var(--bg-primary)',
-                      borderColor: errors.subject ? '#ef4444' : 'var(--border)',
-                      color: 'var(--text-primary)',
-                    }}
-                  >
-                    <option value="">Select a subject</option>
-                    {subjects.map((subj) => (
-                      <option key={subj} value={subj}>
-                        {subj}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.subject && (
-                    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                      <AlertCircle size={14} />
-                      {errors.subject}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: 'var(--text-primary)' }}
-                  >
-                    Message *
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-lg border transition-all duration-300 resize-none"
-                    style={{
-                      backgroundColor: 'var(--bg-primary)',
-                      borderColor: errors.message ? '#ef4444' : 'var(--border)',
-                      color: 'var(--text-primary)',
-                    }}
-                    placeholder="Your message..."
-                  />
-                  {errors.message && (
-                    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                      <AlertCircle size={14} />
-                      {errors.message}
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-4 text-base font-medium tracking-wider uppercase rounded-lg transition-all duration-300 hover:scale-[1.02]"
+              <div>
+                <label
+                  className="block text-sm font-medium mb-1"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Subject *
+                </label>
+                <select
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 text-sm"
                   style={{
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--bg-primary)',
+                    backgroundColor: 'var(--bg-primary)',
+                    borderColor: errors.subject ? '#ef4444' : 'var(--border)',
+                    color: 'var(--text-primary)',
                   }}
                 >
-                  Send Message
-                </button>
-              </form>
-            </div>
-          </div>
+                  <option value="">Select a subject</option>
+                  {subjects.map((subj) => (
+                    <option key={subj} value={subj}>
+                      {subj}
+                    </option>
+                  ))}
+                </select>
+                {errors.subject && (
+                  <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle size={12} />
+                    {errors.subject}
+                  </p>
+                )}
+              </div>
 
-          <div className="space-y-8">
+              <div>
+                <label
+                  className="block text-sm font-medium mb-1"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Message *
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={4}
+                  className="w-full px-4 py-2.5 rounded-lg border transition-all duration-300 resize-none text-sm"
+                  style={{
+                    backgroundColor: 'var(--bg-primary)',
+                    borderColor: errors.message ? '#ef4444' : 'var(--border)',
+                    color: 'var(--text-primary)',
+                  }}
+                  placeholder="Your message... "
+                />
+                {errors.message && (
+                  <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle size={12} />
+                    {errors.message}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 text-sm font-medium tracking-wider uppercase rounded-lg transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+                style={{
+                  backgroundColor: 'var(--accent)',
+                  color: 'var(--bg-primary)',
+                }}
+              >
+                 Send Message 
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {contactInfo.map((info, index) => (
             <div
-              className="p-8 rounded-lg animate-slide-up"
+              key={index}
+              className="p-4 rounded-lg text-center"
               style={{ backgroundColor: 'var(--surface)' }}
             >
-              <h2
-                className="font-heading text-2xl font-semibold mb-6"
+              <info.icon
+                size={24}
+                className="mx-auto mb-2"
+                style={{ color: 'var(--accent)' }}
+              />
+              <p
+                className="font-medium text-sm mb-1"
                 style={{ color: 'var(--text-primary)' }}
               >
-                Contact Information
-              </h2>
-
-              <div className="space-y-6">
-                {contactInfo.map((item, index) => (
-                  <div key={index} className="flex gap-4">
-                    <div
-                      className="flex-shrink-0 p-3 rounded-full"
-                      style={{ backgroundColor: 'var(--bg-primary)' }}
-                    >
-                      <item.icon
-                        size={24}
-                        style={{ color: 'var(--accent)' }}
-                      />
-                    </div>
-                    <div>
-                      <p
-                        className="font-medium"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        {item.title}
-                      </p>
-                      <p
-                        className="text-sm"
-                        style={{ color: 'var(--accent)' }}
-                      >
-                        {item.details}
-                      </p>
-                      <p
-                        className="text-sm opacity-70"
-                        style={{ color: 'var(--text-secondary)' }}
-                      >
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                {info.label}
+              </p>
+              <p
+                className="text-sm"
+                style={{ color: 'var(--accent)' }}
+              >
+                {info.details}
+              </p>
+              <p
+                className="text-xs mt-1 opacity-60"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                {info.description}
+              </p>
             </div>
-
-            <div
-              className="rounded-lg overflow-hidden h-64 md:h-80 animate-scale-in"
-              style={{ backgroundColor: 'var(--surface)' }}
-            >
-              <iframe
-                title="Location map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1422937950147!2d-73.98731968482413!3d40.75889607932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-              />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
